@@ -2,6 +2,7 @@ package cmd_test
 
 import (
 	"bytes"
+	"log"
 	"os"
 	"testing"
 
@@ -46,6 +47,10 @@ func TestAsciingCmd(t *testing.T) {
 	defer resetArgs()
 	myFigure := figure.NewFigure("hello", "", true)
 	AsciingCmd := cmd.AsciingCmd
+	err := cmd.AsciingCmd.Execute()
+    if err != nil {
+        log.Fatalf("Failed to execute AsciingCmd: %v", err)
+    }
 	got := PickStdout(t, func() { AsciingCmd.Execute() }) + "\n"
 	want := "asciing called\n" + myFigure.String()
 
@@ -54,7 +59,3 @@ func TestAsciingCmd(t *testing.T) {
 	}
 
 }
-
-
-
-
