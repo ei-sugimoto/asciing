@@ -23,6 +23,7 @@ var AsciingCmd = &cobra.Command{
 	},
 }
 
+
 func init() {
 	rootCmd.AddCommand(AsciingCmd)
 }

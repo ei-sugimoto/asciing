@@ -43,15 +43,18 @@ func PickStdout(t *testing.T, fnc func()) string {
 }
 
 func TestAsciingCmd(t *testing.T) {
+	got := ""
 	setArgs("hello")
 	defer resetArgs()
 	myFigure := figure.NewFigure("hello", "", true)
 	AsciingCmd := cmd.AsciingCmd
-	err := cmd.AsciingCmd.Execute()
+	err := AsciingCmd.Execute()
+	
     if err != nil {
         log.Fatalf("Failed to execute AsciingCmd: %v", err)
-    }
-	got := PickStdout(t, func() { AsciingCmd.Execute() }) + "\n"
+    } else {
+		got = PickStdout(t, func() { AsciingCmd.Execute() }) + "\n"
+	}
 	want := "asciing called\n" + myFigure.String()
 
 	if got != want {
