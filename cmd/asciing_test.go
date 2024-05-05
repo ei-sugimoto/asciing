@@ -10,7 +10,6 @@ import (
 	"github.com/ei-sugimoto/asciing/cmd"
 )
 
-
 var originalArgs = os.Args
 
 func setArgs(arg string) {
@@ -43,22 +42,20 @@ func PickStdout(t *testing.T, fnc func()) string {
 }
 
 func TestAsciingCmd(t *testing.T) {
-	got := ""
 	setArgs("hello")
 	defer resetArgs()
 	myFigure := figure.NewFigure("hello", "", true)
 	AsciingCmd := cmd.AsciingCmd
 	err := AsciingCmd.Execute()
-	
-    if err != nil {
-        log.Fatalf("Failed to execute AsciingCmd: %v", err)
-    } else {
-		got = PickStdout(t, func() { AsciingCmd.Execute() }) + "\n"
+	if err != nil {
+		log.Fatalf("Failed to execute AsciingCmd: %v", err)
 	}
+
+	got := PickStdout(t, func() { AsciingCmd.Execute() }) + "\n"
+
 	want := "asciing called\n" + myFigure.String()
 
 	if got != want {
 		t.Errorf("got %q, want %q", got, want)
 	}
-
 }
