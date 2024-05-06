@@ -10,6 +10,7 @@ import (
 	"github.com/ei-sugimoto/asciing/cmd"
 )
 
+
 var originalArgs = os.Args
 
 func setArgs(arg ...string) {

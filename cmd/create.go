@@ -10,6 +10,7 @@ import (
 
 var font string
 
+
 var AsciingCmd = &cobra.Command{
 	Use:   "create",
 	Short: "asciing is a tool for converting string to ASCII art.",
