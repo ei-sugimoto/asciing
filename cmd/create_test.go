@@ -14,6 +14,7 @@ var originalArgs = os.Args
 
 func setArgs(arg ...string) {
 	os.Args = append(os.Args[:1], arg...)
+
 }
 
 func resetArgs() {
