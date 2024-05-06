@@ -2,9 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"os"
-	"regexp"
 
 	"github.com/common-nighthawk/go-figure"
 	"github.com/spf13/cobra"
@@ -29,6 +27,14 @@ var AsciingCmd = &cobra.Command{
 			fmt.Println("Error: ", err)
 		}
 
+		if font != "" {
+			err := ValidateFont(font)
+			if err != nil {
+				fmt.Printf("Error: Font %s not found\n", font)
+				os.Exit(1)
+			}
+		}
+
 		myFigure := figure.NewFigure(outPutString, font, true)
 		myFigure.Print()
 	},
@@ -36,31 +42,16 @@ var AsciingCmd = &cobra.Command{
 
 func init() {
 	AsciingCmd.PersistentFlags().StringVar(&font, "font", "", "font name")
-	err := AsciingCmd.MarkFlagRequired("font")
-	if err != nil {
-		if font != "" {
-			AsciingCmd.Run = func(cmd *cobra.Command, args []string) {
-				err := VaridateFont(font) // ここでフォントの存在を確認します
-				if err != nil {
-					os.Exit(1)
-				}
-				figure.NewFigure(args[0], font, true).Print()
-			}
-		}
-	}
-
 	rootCmd.AddCommand(AsciingCmd)
 }
 
-func VaridateFont(font string) error {
-	if !regexp.MustCompile(`^[a-zA-Z0-9_-]+$`).MatchString(font) {
-		return fmt.Errorf("Invalid font name")
-	}
-	fontpath := "fonts/" + font + ".flf"
-
-	if _, err := os.Stat(fontpath); os.IsNotExist(err) {
-		log.Println(err)                    // 詳細なエラーメッセージをログに記録します
-		return fmt.Errorf("Font not found") // ユーザーには一般的なエラーメッセージを表示します
-	}
-	return nil
+func ValidateFont(font string) (err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Font %s not found", font)
+		}
+	}()
+	figure.NewFigure("test", font, true)
+	err = nil
+	return err
 }
