@@ -12,8 +12,8 @@ import (
 
 var originalArgs = os.Args
 
-func setArgs(arg string) {
-	os.Args = append(originalArgs, "asciing", arg)
+func setArgs(arg ...string) {
+	os.Args = append(os.Args[:1], arg...)
 }
 
 func resetArgs() {
@@ -42,20 +42,43 @@ func PickStdout(t *testing.T, fnc func()) string {
 }
 
 func TestAsciingCmd(t *testing.T) {
-	setArgs("hello")
+	setArgs("create", "hello", "world")
 	defer resetArgs()
-	myFigure := figure.NewFigure("hello", "", true)
+	myFigure := figure.NewFigure("hello world", "", true)
 	AsciingCmd := cmd.AsciingCmd
-	err := AsciingCmd.Execute()
+
+	var err error
+	got := PickStdout(t, func() { err = AsciingCmd.Execute() }) + "\n"
 	if err != nil {
 		log.Fatalf("Failed to execute AsciingCmd: %v", err)
 	}
+	want := "asciing called\n" + myFigure.String()
+	if got != want {
+		t.Errorf("got: \n%q \n want:%q\n", got, want)
+	}
+}
 
-	got := PickStdout(t, func() { AsciingCmd.Execute() }) + "\n"
-
+func TestAsciingCmdWithFlagFont(t *testing.T) {
+	setArgs("create", "hello", "world", "--font", "isometric1")
+	defer resetArgs()
+	myFigure := figure.NewFigure("hello world", "isometric1", true)
+	AsciingCmd := cmd.AsciingCmd
+	var err error
+	got := PickStdout(t, func() { err = AsciingCmd.Execute() }) + "\n"
+	if err != nil {
+		log.Fatalf("Failed to execute AsciingCmd: %v", err)
+	}
 	want := "asciing called\n" + myFigure.String()
 
 	if got != want {
-		t.Errorf("got %q, want %q", got, want)
+		t.Errorf("got: %q\n want:%q\n", got, want)
+	}
+}
+
+func TestFontVaridate(t *testing.T) {
+	err := cmd.VaridateFont("notFoundFont")
+
+	if err == nil {
+		t.Error("Expected error, but got nil")
 	}
 }
