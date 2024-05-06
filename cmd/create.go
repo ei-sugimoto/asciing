@@ -8,7 +8,7 @@ import (
 )
 
 var AsciingCmd = &cobra.Command{
-	Use:   "asciing",
+	Use:   "create",
 	Short: "asciing is a tool for converting string to ASCII art.",
 	Long:  "asciing takes a string as its argument. It converts the string into ASCII art and outputs it.",
 	Run: func(cmd *cobra.Command, args []string) {
