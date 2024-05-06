@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"os"
 
+
 	"github.com/common-nighthawk/go-figure"
 	"github.com/spf13/cobra"
 )
 
 var font string
-
 
 var AsciingCmd = &cobra.Command{
 	Use:   "create",
@@ -28,6 +28,7 @@ var AsciingCmd = &cobra.Command{
 			fmt.Println("Error: ", err)
 		}
 
+
 		if font != "" {
 			err := ValidateFont(font)
 			if err != nil {
@@ -35,7 +36,6 @@ var AsciingCmd = &cobra.Command{
 				os.Exit(1)
 			}
 		}
-
 		myFigure := figure.NewFigure(outPutString, font, true)
 		myFigure.Print()
 	},

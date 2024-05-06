@@ -15,7 +15,6 @@ var originalArgs = os.Args
 
 func setArgs(arg ...string) {
 	os.Args = append(os.Args[:1], arg...)
-
 }
 
 func resetArgs() {
@@ -81,6 +80,7 @@ func TestAsciingCmdWithFlagFont(t *testing.T) {
 
 func TestFontVaridate(t *testing.T) {
 	err := cmd.ValidateFont("notFoundFont")
+
 
 	if err == nil {
 		t.Error("Expected error, but got nil")
