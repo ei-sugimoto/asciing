@@ -36,11 +36,16 @@ var AsciingCmd = &cobra.Command{
 
 func init() {
 	AsciingCmd.PersistentFlags().StringVar(&font, "font", "", "font name")
-	AsciingCmd.MarkFlagRequired("font")
-	if font != "" {
-		AsciingCmd.Run = func(cmd *cobra.Command, args []string) {
-			VaridateFont(font) // ここでフォントの存在を確認します
-			figure.NewFigure(args[0], font, true).Print()
+	err := AsciingCmd.MarkFlagRequired("font")
+	if err != nil {
+		if font != "" {
+			AsciingCmd.Run = func(cmd *cobra.Command, args []string) {
+				err := VaridateFont(font) // ここでフォントの存在を確認します
+				if err != nil {
+					os.Exit(1)
+				}
+				figure.NewFigure(args[0], font, true).Print()
+			}
 		}
 	}
 
