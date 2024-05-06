@@ -10,6 +10,7 @@ import (
 	"github.com/ei-sugimoto/asciing/cmd"
 )
 
+
 var originalArgs = os.Args
 
 func setArgs(arg ...string) {
@@ -64,10 +65,12 @@ func TestAsciingCmdWithFlagFont(t *testing.T) {
 	myFigure := figure.NewFigure("hello world", "isometric1", true)
 	AsciingCmd := cmd.AsciingCmd
 	var err error
+
 	got := PickStdout(t, func() { err = AsciingCmd.Execute() }) + "\n"
 	if err != nil {
 		log.Fatalf("Failed to execute AsciingCmd: %v", err)
 	}
+
 	want := "asciing called\n" + myFigure.String()
 
 	if got != want {
@@ -76,7 +79,8 @@ func TestAsciingCmdWithFlagFont(t *testing.T) {
 }
 
 func TestFontVaridate(t *testing.T) {
-	err := cmd.VaridateFont("notFoundFont")
+	err := cmd.ValidateFont("notFoundFont")
+
 
 	if err == nil {
 		t.Error("Expected error, but got nil")
