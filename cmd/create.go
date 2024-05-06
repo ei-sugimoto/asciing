@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 
-
 	"github.com/common-nighthawk/go-figure"
 	"github.com/spf13/cobra"
 )
