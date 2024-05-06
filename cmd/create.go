@@ -27,7 +27,6 @@ var AsciingCmd = &cobra.Command{
 			fmt.Println("Error: ", err)
 		}
 
-
 		if font != "" {
 			err := ValidateFont(font)
 			if err != nil {
